@@ -1,0 +1,40 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\Keil\project\PWM_LED\PWM_LED.uvproj
+Project File Date:  11/30/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling PWM_LED.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?PWM_LED
+Program Size: data=15.0 xdata=0 code=299
+"PWM_LED" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?PWM_LED
+Program Size: data=15.0 xdata=0 code=299
+creating hex file from "PWM_LED"...
+"PWM_LED" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling PWM_LED.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?PWM_LED
+Program Size: data=15.0 xdata=0 code=303
+creating hex file from "PWM_LED"...
+"PWM_LED" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling PWM_LED.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?PWM_LED
+Program Size: data=15.0 xdata=0 code=303
+creating hex file from "PWM_LED"...
+"PWM_LED" - 0 Error(s), 1 Warning(s).
