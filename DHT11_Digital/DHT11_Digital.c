@@ -2,6 +2,7 @@
 #include <intrins.h>  //use for _nop_()
 #define uchar unsigned char
 #define uint unsigned int
+#define sint short int
 
 unsigned char code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,
                         0xf8,0x80,0x90};
@@ -10,15 +11,31 @@ sbit P2_2 = P2^2;
 sbit P2_1 = P2^1;
 sbit P2_0 = P2^0;
 sbit DHT11_DATA=P2^7;    //DHT11数据线 
-static RH_H,RH_L,Temp_H,Temp_L,checksum;
+static int RH_H,RH_L,Temp_H,Temp_L,checksum;
 //湿度整数位、小数位，温度整数位、小数位，校验和。
-	uchar for1s=0;//顾名思义，为了一秒延时而设的变量
-void Delay500us()		//@11.0592MHz
+static sint RH_I1,RH_F1,T_I1,T_F1;
+static sint RH_I0,RH_F0,T_I0,T_F0;
+static uchar for1s=0;//顾名思义，为了一秒延时而设的变量
+void scanDHT11();
+sint recivedata();
+void Delay10us()		//@11.0592MHz
 {
 	unsigned char i;
-	_nop_();
-	i = 227;
+
+	i = 2;
 	while (--i);
+}
+
+void Delay20ms()		//@11.0592MHz
+{
+	unsigned char i, j;
+
+	i = 36;
+	j = 217;
+	do
+	{
+		while (--j);
+	} while (--i);
 }
 
 
@@ -97,27 +114,37 @@ if (DHT11_DATA == 0){
 	Temp_H=recivedata();
 	Temp_L=recivedata();
 	checksum=recivedata();
+	RH_I1=(RH_H/10);
+	RH_I0=(RH_H%10);
+	RH_F1=(RH_L/10);
+	RH_F0=(RH_L%10);
+	T_I1=(Temp_H/10);
+	T_I0=(Temp_H%10);
+	T_F1=(Temp_L/10);
+	T_F0=(Temp_L%10);
 	
 } 
-char recivedata(){
-uchar i;
-bit bits[8];
-bits=0;
-for(i=0;i<8;i++){
-while(DHT11_DATA);//等待数据线拉高
-Delay10us();
-Delay10us();
-Delay10us();
-Delay10us();
-Delay10us();
-Delay10us();
-bits[i]=DHT11_DATA;
+}
 
+
+sint recivedata(){
+	uchar i;
+	sint data_t;
+	char bits;
+	bits=0;
+	for(i=0;i<8;i++){
+		while(DHT11_DATA);//等待数据线拉高
+		Delay10us();
+		Delay10us();
+		Delay10us();
+		Delay10us();
+		Delay10us();
+		Delay10us();
+		bits<<=1;
+		data_t=DHT11_DATA;
+		bits +=data_t;
 }
 return bits;
-	
-}
-	
 	
 }
 void main()
@@ -125,6 +152,6 @@ void main()
 	EA=1;IT0=1;EX0=1;
 	Timer0Init();
 	while(1){
-		dprint(1,2,3,4);
+		dprint(T_I1,T_I0,T_F1,T_F0);
 	}
 }
