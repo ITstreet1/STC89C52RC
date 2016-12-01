@@ -100,7 +100,21 @@ if (DHT11_DATA == 0){
 	
 } 
 char recivedata(){
-	
+uchar i;
+bit bits[8];
+bits=0;
+for(i=0;i<8;i++){
+while(DHT11_DATA);//等待数据线拉高
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+bits[i]=DHT11_DATA;
+
+}
+return bits;
 	
 }
 	
