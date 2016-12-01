@@ -72,7 +72,22 @@ void scanDHT11(){
 5.
 
 */
-	
+	//1.主机拉低数据位18ms以上发送读取信号
+DHT11_DATA=0;
+Delay20ms();
+DHT11_DATA=1;
+//2.延时20-40us，等待DHT11响应
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+Delay10us();
+if (DHT11_DATA == 0){
+	while(DHT11_DATA==0);
+	while(DHT11_DATA==1);
+	recivedata();
+} 
 	
 	
 	
