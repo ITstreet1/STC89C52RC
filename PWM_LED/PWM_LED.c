@@ -65,7 +65,7 @@ void timer0() interrupt 1{
 		P1=~P1;
 		count=0;
 	}
-	if(count_CB == 25)//如果过了50*20us则改变亮度
+	if(count_CB == 25)//如果过了25*20us则改变亮度
 	{
 		count_CB = 0;
 		time_PWM ++;
