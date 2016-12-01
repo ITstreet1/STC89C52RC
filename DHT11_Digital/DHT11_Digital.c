@@ -10,8 +10,9 @@ sbit P2_2 = P2^2;
 sbit P2_1 = P2^1;
 sbit P2_0 = P2^0;
 sbit DHT11_DATA=P2^7;    //DHT11数据线 
-static tempH,tempL;
-	uchar for1s=0;
+static RH_H,RH_L,Temp_H,Temp_L,checksum;
+//湿度整数位、小数位，温度整数位、小数位，校验和。
+	uchar for1s=0;//顾名思义，为了一秒延时而设的变量
 void Delay500us()		//@11.0592MHz
 {
 	unsigned char i;
@@ -73,6 +74,7 @@ void scanDHT11(){
 
 */
 	//1.主机拉低数据位18ms以上发送读取信号
+	
 DHT11_DATA=0;
 Delay20ms();
 DHT11_DATA=1;
@@ -83,12 +85,24 @@ Delay10us();
 Delay10us();
 Delay10us();
 Delay10us();
+//数据位被拉低则说明DHT11响应
 if (DHT11_DATA == 0){
+	//等到数据位再次被拉高
 	while(DHT11_DATA==0);
+	//等待拉低准备接收数据
 	while(DHT11_DATA==1);
-	recivedata();
-} 
+	//开始接收数据
+	RH_H=recivedata();
+	RH_L=recivedata();
+	Temp_H=recivedata();
+	Temp_L=recivedata();
+	checksum=recivedata();
 	
+} 
+char recivedata(){
+	
+	
+}
 	
 	
 }
