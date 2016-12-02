@@ -82,7 +82,7 @@ void dprint(uchar num0,uchar num1,uchar num2,uchar num3){
 	P2_0=0;
 	P2_0=1;
 	
-	P0=table[num1];
+	P0=(table[num1]& 0x7f);
 	P2_1=0;
 	P2_1=1;
 	
@@ -142,7 +142,7 @@ if (DHT11_DATA == 0){
 		RH_I0=(RH_H%10);
 		RH_F1=(RH_L/10);
 		RH_F0=(RH_L%10);
-		T_I1=((Temp_H/10)%10);
+		T_I1=((Temp_H/10));
 		T_I0=(Temp_H%10);
 		T_F1=(Temp_L/10);
 		T_F0=(Temp_L%10);	
@@ -182,10 +182,10 @@ void main()
 	while(1){
 		if (TorR){
 			
-			dprint(RH_I1,(RH_I0& 0x7f),RH_F1,RH_F0);
+			dprint(RH_I1,(RH_I0),RH_F1,RH_F0);
 			
 		}else{
-			dprint(T_I1,(T_I0& 0x7f),T_F1,T_F0);
+			dprint(T_I1,(T_I0),T_F1,T_F0);
 		}
 		
 	}
