@@ -15,7 +15,7 @@ static int RH_H,RH_L,Temp_H,Temp_L,checksum;
 //湿度整数位、小数位，温度整数位、小数位，校验和。
 static sint RH_I1,RH_F1,T_I1,T_F1;
 static sint RH_I0,RH_F0,T_I0,T_F0;
-static uchar for1s=0;//顾名思义，为了一秒延时而设的变量
+static uchar for1s=0;//为了一秒延时而设的变量
 void scanDHT11();
 sint recivedata();
 void Delay10us()		//@11.0592MHz
