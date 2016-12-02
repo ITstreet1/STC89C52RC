@@ -3,7 +3,10 @@
 #define uchar unsigned char
 #define uint unsigned int
 #define sint short int
+/*
+todo 按键中断没写
 
+*/
 unsigned char code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,
                         0xf8,0x80,0x90};
 sbit led0=P1^0;
@@ -24,6 +27,7 @@ static uchar RH_H,RH_L,Temp_H,Temp_L,checksum;
 static sint RH_I1,RH_F1,T_I1,T_F1;
 static sint RH_I0,RH_F0,T_I0,T_F0;
 static sint for1s=0;//为了一秒延时而设的变量
+bit TorR=0;
 void scanDHT11();
 uchar recivedata();
 void Delay10us()		//@11.0592MHz
@@ -174,7 +178,15 @@ void main()
 {
 	EA=1;ET0=1;EX0=1;
 	Timer0Init();
+	
 	while(1){
-		dprint(T_I1,T_I0,T_F1,T_F0);
+		if (TorR){
+			
+			dprint(RH_I1,(RH_I0& 0x7f),RH_F1,RH_F0);
+			
+		}else{
+			dprint(T_I1,(T_I0& 0x7f),T_F1,T_F0);
+		}
+		
 	}
 }
