@@ -6,18 +6,26 @@
 
 unsigned char code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,
                         0xf8,0x80,0x90};
+sbit led0=P1^0;
+sbit led1=P1^1;
+sbit led2=P1^2;
+sbit led3=P1^3;
+sbit led4=P1^4;
+sbit led5=P1^5;
+sbit led6=P1^6;
+sbit led7=P1^7;
 sbit P2_3 = P2^3;
 sbit P2_2 = P2^2;
 sbit P2_1 = P2^1;
 sbit P2_0 = P2^0;
 sbit DHT11_DATA=P2^7;    //DHT11数据线 
-static int RH_H,RH_L,Temp_H,Temp_L,checksum;
+static uchar RH_H,RH_L,Temp_H,Temp_L,checksum;
 //湿度整数位、小数位，温度整数位、小数位，校验和。
 static sint RH_I1,RH_F1,T_I1,T_F1;
 static sint RH_I0,RH_F0,T_I0,T_F0;
-static uchar for1s=0;//为了一秒延时而设的变量
+static sint for1s=0;//为了一秒延时而设的变量
 void scanDHT11();
-sint recivedata();
+uchar recivedata();
 void Delay10us()		//@11.0592MHz
 {
 	unsigned char i;
@@ -55,7 +63,10 @@ void INT0_DHT11 () interrupt 1{
 	TL0 = 0x00;		//设置定时初值
 	TH0 = 0x4C;		//设置定时初值
 	for1s++;
-	if (for1s>20){
+	if (for1s>40){
+		P1=0xff;
+		RH_H=0;RH_L=0;Temp_H=0;Temp_L=0;checksum=0;
+		RH_I1=0;RH_F1=0;T_I1=0;T_F1=0;RH_I0=0;RH_F0=0;T_I0=0;T_F0=0;
 		scanDHT11();
 		for1s=0;
 	}
@@ -82,6 +93,7 @@ void dprint(uchar num0,uchar num1,uchar num2,uchar num3){
 }
 
 void scanDHT11(){
+	led0=0;
 /*
 1.主机拉低数据位18ms以上发送读取信号
 2.延时20-40us，并将数据位设置为高电平，等待DHT11响应
@@ -96,7 +108,7 @@ DHT11_DATA=0;
 Delay20ms();
 DHT11_DATA=1;
 //2.延时20-40us，等待DHT11响应
-Delay10us();
+//Delay10us();
 Delay10us();
 Delay10us();
 Delay10us();
@@ -105,51 +117,62 @@ Delay10us();
 //数据位被拉低则说明DHT11响应
 if (DHT11_DATA == 0){
 	//等到数据位再次被拉高
-	while(DHT11_DATA==0);
-	//等待拉低准备接收数据
+	led1=0;
 	while(DHT11_DATA==1);
+	led2=0;
+	//等待拉低准备接收数据
+	while(DHT11_DATA==0);
+	led3=0;
 	//开始接收数据
 	RH_H=recivedata();
 	RH_L=recivedata();
 	Temp_H=recivedata();
 	Temp_L=recivedata();
 	checksum=recivedata();
-	RH_I1=(RH_H/10);
-	RH_I0=(RH_H%10);
-	RH_F1=(RH_L/10);
-	RH_F0=(RH_L%10);
-	T_I1=(Temp_H/10);
-	T_I0=(Temp_H%10);
-	T_F1=(Temp_L/10);
-	T_F0=(Temp_L%10);
+	//
+	if (checksum!=0)
+		led4=0;//
+	if(((RH_H+RH_L+Temp_H+Temp_L)&0xff)==checksum){
+		led5=0;
+		RH_I1=(RH_H/10);
+		RH_I0=(RH_H%10);
+		RH_F1=(RH_L/10);
+		RH_F0=(RH_L%10);
+		T_I1=((Temp_H/10)%10);
+		T_I0=(Temp_H%10);
+		T_F1=(Temp_L/10);
+		T_F0=(Temp_L%10);	
+	}
 	
 } 
 }
 
 
-sint recivedata(){
+uchar recivedata(){
 	uchar i;
 	sint data_t;
-	char bits;
-	bits=0;
+	uchar bits;
+	bits=0x00;
 	for(i=0;i<8;i++){
-		while(DHT11_DATA);//等待数据线拉高
+		while(DHT11_DATA==0);//等待数据线拉高
 		Delay10us();
 		Delay10us();
 		Delay10us();
 		Delay10us();
-		Delay10us();
-		Delay10us();
+		//Delay10us();
+		//Delay10us();
 		bits<<=1;
 		data_t=DHT11_DATA;
-		bits +=data_t;
+		bits |=data_t;
+		while(DHT11_DATA==1);
+		
 }
 return bits;
 	
 }
 void main()
 {
-	EA=1;IT0=1;EX0=1;
+	EA=1;ET0=1;EX0=1;
 	Timer0Init();
 	while(1){
 		dprint(T_I1,T_I0,T_F1,T_F0);
