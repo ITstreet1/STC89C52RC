@@ -1,0 +1,46 @@
+C51 COMPILER V9.50a   MAIN                                                                 12/04/2016 09:25:27 PAGE 1   
+
+
+C51 COMPILER V9.50a, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "REG51.h"
+   2          #include "oled.h"
+   3          #include "bmp.h"
+   4          
+   5           int main(void)
+   6           {      u8 t;
+   7   1                      OLED_Init();                    //初始化OLED  
+   8   1                      OLED_Clear()    ; 
+   9   1              
+  10   1                      t='&';
+  11   1      
+  12   1              while(1) 
+  13   1              {               
+  14   2                      OLED_Clear();
+  15   2      
+  16   2                      OLED_ShowCHinese(108,0,1);//技
+  17   2                      OLED_ShowString(6,3,"0.96' OLED TEST",16);
+  18   2                      OLED_ShowChar(48,6,t,16);//显示ASCII字符            
+  19   2                      delay_ms(100);
+  20   2      
+  21   2              }         
+  22   1              
+  23   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =   2064    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

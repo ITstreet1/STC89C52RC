@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"DHT11_Digital.obj" 
+TO "DHT11_Digital" 
+RAMSIZE(256) 

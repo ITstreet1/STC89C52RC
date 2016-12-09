@@ -1,0 +1,224 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        12/08/2016  20:01:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, adc0809.obj TO ADC0809 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  adc0809.obj (ADC0809)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?IMUL)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?SIDIV)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  ADC0809 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?ADC0809
+            DATA    000DH     0004H     UNIT         _DATA_GROUP_
+            IDATA   0011H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     UNIT         ?PR?TIMER0?ADC0809
+                    0006H     0005H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     009DH     UNIT         ?C?LIB_CODE
+            CODE    00ABH     0077H     UNIT         ?PR?MAIN?ADC0809
+            CODE    0122H     0027H     UNIT         ?PR?_DPRINT?ADC0809
+            CODE    0149H     0011H     UNIT         ?PR?TIMER0INIT?ADC0809
+            CODE    015AH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0166H     000AH     UNIT         ?CO?ADC0809
+
+
+
+OVERLAY MAP OF MODULE:   ADC0809 (?C_STARTUP)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?ADC0809
+
+?PR?MAIN?ADC0809               -----    -----
+  +--> ?PR?TIMER0INIT?ADC0809
+  +--> ?PR?_DPRINT?ADC0809
+
+?PR?_DPRINT?ADC0809            000DH    0004H
+  +--> ?CO?ADC0809
+
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/08/2016  20:01:47  PAGE 2
+
+
+
+SYMBOL TABLE OF MODULE:  ADC0809 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:015AH         SEGMENT       ?C_C51STARTUP
+  I:0011H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:015DH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:015AH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:015AH         LINE#         133
+  C:015CH         LINE#         134
+  C:015DH         LINE#         135
+  C:015EH         LINE#         136
+  C:0160H         LINE#         185
+  C:0163H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        ADC0809
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0166H         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+  B:00A0H.6       PUBLIC        START
+  B:00A0H.0       PUBLIC        P2_0
+  B:00A0H.1       PUBLIC        P2_1
+  B:00A0H.2       PUBLIC        P2_2
+  B:00A0H.4       PUBLIC        OE
+  C:0122H         PUBLIC        _dprint
+  B:00A0H.3       PUBLIC        P2_3
+  D:00B8H         PUBLIC        IP
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/08/2016  20:01:47  PAGE 3
+
+
+  C:00ABH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  B:0088H.5       PUBLIC        TF0
+  C:0149H         PUBLIC        Timer0Init
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  C:0003H         PUBLIC        timer0
+  D:0008H         PUBLIC        F_0
+  D:0009H         PUBLIC        V
+  D:000BH         PUBLIC        F_1
+  B:0088H.4       PUBLIC        TR0
+  B:00A0H.5       PUBLIC        EOC
+  D:000CH         PUBLIC        I_0
+  B:00A0H.7       PUBLIC        CLK
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          TIMER0INIT
+  C:0149H         LINE#         21
+  C:0149H         LINE#         22
+  C:0149H         LINE#         24
+  C:014CH         LINE#         25
+  C:014FH         LINE#         26
+  C:0152H         LINE#         27
+  C:0155H         LINE#         28
+  C:0157H         LINE#         29
+  C:0159H         LINE#         30
+  -------         ENDPROC       TIMER0INIT
+  -------         PROC          _DPRINT
+  D:0007H         SYMBOL        num0
+  D:0005H         SYMBOL        num1
+  D:0003H         SYMBOL        num2
+  D:0010H         SYMBOL        num3
+  C:0122H         LINE#         32
+  C:0122H         LINE#         34
+  C:0129H         LINE#         35
+  C:012BH         LINE#         36
+  C:012DH         LINE#         38
+  C:0133H         LINE#         39
+  C:0135H         LINE#         40
+  C:0137H         LINE#         42
+  C:013BH         LINE#         43
+  C:013DH         LINE#         44
+  C:013FH         LINE#         46
+  C:0144H         LINE#         47
+  C:0146H         LINE#         48
+  C:0148H         LINE#         50
+  -------         ENDPROC       _DPRINT
+  -------         PROC          MAIN
+  C:00ABH         LINE#         51
+  C:00ABH         LINE#         52
+  C:00AEH         LINE#         53
+  C:00B1H         LINE#         54
+  C:00B3H         LINE#         55
+  C:00B5H         LINE#         56
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/08/2016  20:01:47  PAGE 4
+
+
+  C:00B7H         LINE#         57
+  C:00B9H         LINE#         58
+  C:00BBH         LINE#         59
+  C:00BDH         LINE#         64
+  C:00BDH         LINE#         65
+  C:00BFH         LINE#         66
+  C:00C1H         LINE#         67
+  C:00C3H         LINE#         68
+  C:00C6H         LINE#         69
+  C:00C8H         LINE#         70
+  C:00DCH         LINE#         71
+  C:00E4H         LINE#         72
+  C:00F3H         LINE#         73
+  C:00FCH         LINE#         74
+  C:010BH         LINE#         75
+  C:0114H         LINE#         76
+  C:011EH         LINE#         77
+  C:0120H         LINE#         80
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:0003H         LINE#         81
+  C:0003H         LINE#         82
+  C:0005H         LINE#         83
+  -------         ENDPROC       TIMER0
+  -------         ENDMOD        ADC0809
+
+  -------         MODULE        ?C?IMUL
+  C:000EH         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+  -------         MODULE        ?C?SIDIV
+  C:0020H         PUBLIC        ?C?SIDIV
+  -------         ENDMOD        ?C?SIDIV
+
+  -------         MODULE        ?C?UIDIV
+  C:0056H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=18.0 xdata=0 code=363
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

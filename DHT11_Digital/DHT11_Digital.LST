@@ -1,0 +1,221 @@
+C51 COMPILER V9.50a   DHT11_DIGITAL                                                        12/02/2016 22:33:00 PAGE 1   
+
+
+C51 COMPILER V9.50a, COMPILATION OF MODULE DHT11_DIGITAL
+OBJECT MODULE PLACED IN DHT11_Digital.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE DHT11_Digital.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <intrins.h>  //use for _nop_()
+   3          #define uchar unsigned char
+   4          #define uint unsigned int
+   5          #define sint short int
+   6          /*
+   7          todo 按键中断没写
+   8          
+   9          */
+  10          unsigned char code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,
+  11                                  0xf8,0x80,0x90};
+  12          sbit led0=P1^0;
+  13          sbit led1=P1^1;
+  14          sbit led2=P1^2;
+  15          sbit led3=P1^3;
+  16          sbit led4=P1^4;
+  17          sbit led5=P1^5;
+  18          sbit led6=P1^6;
+  19          sbit led7=P1^7;
+  20          sbit P2_3 = P2^3;
+  21          sbit P2_2 = P2^2;
+  22          sbit P2_1 = P2^1;
+  23          sbit P2_0 = P2^0;
+  24          sbit DHT11_DATA=P2^7;    //DHT11数据线 
+  25          static uchar RH_H,RH_L,Temp_H,Temp_L,checksum;
+  26          //湿度整数位、小数位，温度整数位、小数位，校验和。
+  27          static sint RH_I1,RH_F1,T_I1,T_F1;
+  28          static sint RH_I0,RH_F0,T_I0,T_F0;
+  29          static sint for1s=0;//为了一秒延时而设的变量
+  30          bit TorR=0;
+  31          void scanDHT11();
+  32          uchar recivedata();
+  33          void Delay10us()                //@11.0592MHz
+  34          {
+  35   1              unsigned char i;
+  36   1      
+  37   1              i = 2;
+  38   1              while (--i);
+  39   1      }
+  40          
+  41          void Delay20ms()                //@11.0592MHz
+  42          {
+  43   1              unsigned char i, j;
+  44   1      
+  45   1              i = 36;
+  46   1              j = 217;
+  47   1              do
+  48   1              {
+  49   2                      while (--j);
+  50   2              } while (--i);
+  51   1      }
+  52          
+  53          
+  54          void Timer0Init(void)           //50毫秒@11.0592MHz
+  55          {
+C51 COMPILER V9.50a   DHT11_DIGITAL                                                        12/02/2016 22:33:00 PAGE 2   
+
+  56   1      //      AUXR &= 0x7F;           //定时器时钟12T模式
+  57   1              TMOD &= 0xF0;           //设置定时器模式
+  58   1              TMOD |= 0x01;           //设置定时器模式
+  59   1              TL0 = 0x00;             //设置定时初值
+  60   1              TH0 = 0x4C;             //设置定时初值
+  61   1              TF0 = 0;                //清除TF0标志
+  62   1              TR0 = 1;                //定时器0开始计时
+  63   1      }
+  64          
+  65          void INT0_DHT11 () interrupt 1{
+  66   1      
+  67   1              TL0 = 0x00;             //设置定时初值
+  68   1              TH0 = 0x4C;             //设置定时初值
+  69   1              for1s++;
+  70   1              if (for1s>40){
+  71   2                      P1=0xff;
+  72   2                      RH_H=0;RH_L=0;Temp_H=0;Temp_L=0;checksum=0;
+  73   2                      RH_I1=0;RH_F1=0;T_I1=0;T_F1=0;RH_I0=0;RH_F0=0;T_I0=0;T_F0=0;
+  74   2                      scanDHT11();
+  75   2                      for1s=0;
+  76   2              }
+  77   1              
+  78   1      }
+  79          void dprint(uchar num0,uchar num1,uchar num2,uchar num3){
+  80   1      //it works.
+  81   1              P0=table[num0];
+  82   1              P2_0=0;
+  83   1              P2_0=1;
+  84   1              
+  85   1              P0=(table[num1]& 0x7f);
+  86   1              P2_1=0;
+  87   1              P2_1=1;
+  88   1              
+  89   1              P0=table[num2];
+  90   1              P2_2=0;
+  91   1              P2_2=1;
+  92   1              
+  93   1              P0=table[num3];
+  94   1              P2_3=0;
+  95   1              P2_3=1;
+  96   1              
+  97   1      }
+  98          
+  99          void scanDHT11(){
+ 100   1              led0=0;
+ 101   1      /*
+ 102   1      1.主机拉低数据位18ms以上发送读取信号
+ 103   1      2.延时20-40us，并将数据位设置为高电平，等待DHT11响应
+ 104   1      3.DHT11拉低80us，此为dht11响应信号
+ 105   1      4.DHT11拉低80us，开始发送信号
+ 106   1      5.
+ 107   1      
+ 108   1      */
+ 109   1              //1.主机拉低数据位18ms以上发送读取信号
+ 110   1              
+ 111   1      DHT11_DATA=0;
+ 112   1      Delay20ms();
+ 113   1      DHT11_DATA=1;
+ 114   1      //2.延时20-40us，等待DHT11响应
+ 115   1      //Delay10us();
+ 116   1      Delay10us();
+ 117   1      Delay10us();
+C51 COMPILER V9.50a   DHT11_DIGITAL                                                        12/02/2016 22:33:00 PAGE 3   
+
+ 118   1      Delay10us();
+ 119   1      Delay10us();
+ 120   1      Delay10us();
+ 121   1      //数据位被拉低则说明DHT11响应
+ 122   1      if (DHT11_DATA == 0){
+ 123   2              //等到数据位再次被拉高
+ 124   2              led1=0;
+ 125   2              while(DHT11_DATA==1);
+ 126   2              led2=0;
+ 127   2              //等待拉低准备接收数据
+ 128   2              while(DHT11_DATA==0);
+ 129   2              led3=0;
+ 130   2              //开始接收数据
+ 131   2              RH_H=recivedata();
+ 132   2              RH_L=recivedata();
+ 133   2              Temp_H=recivedata();
+ 134   2              Temp_L=recivedata();
+ 135   2              checksum=recivedata();
+ 136   2              //
+ 137   2              if (checksum!=0)
+ 138   2                      led4=0;//
+ 139   2              if(((RH_H+RH_L+Temp_H+Temp_L)&0xff)==checksum){
+ 140   3                      led5=0;
+ 141   3                      RH_I1=(RH_H/10);
+ 142   3                      RH_I0=(RH_H%10);
+ 143   3                      RH_F1=(RH_L/10);
+ 144   3                      RH_F0=(RH_L%10);
+ 145   3                      T_I1=((Temp_H/10));
+ 146   3                      T_I0=(Temp_H%10);
+ 147   3                      T_F1=(Temp_L/10);
+ 148   3                      T_F0=(Temp_L%10);       
+ 149   3              }
+ 150   2              
+ 151   2      } 
+ 152   1      }
+ 153          
+ 154          
+ 155          uchar recivedata(){
+ 156   1              uchar i;
+ 157   1              sint data_t;
+ 158   1              uchar bits;
+ 159   1              bits=0x00;
+ 160   1              for(i=0;i<8;i++){
+ 161   2                      while(DHT11_DATA==0);//等待数据线拉高
+ 162   2                      Delay10us();
+ 163   2                      Delay10us();
+ 164   2                      Delay10us();
+ 165   2                      Delay10us();
+ 166   2                      //Delay10us();
+ 167   2                      //Delay10us();
+ 168   2                      bits<<=1;
+ 169   2                      data_t=DHT11_DATA;
+ 170   2                      bits |=data_t;
+ 171   2                      while(DHT11_DATA==1);
+ 172   2                      
+ 173   2      }
+ 174   1      return bits;
+ 175   1              
+ 176   1      }
+ 177          void main()
+ 178          {
+ 179   1              EA=1;ET0=1;EX0=1;
+C51 COMPILER V9.50a   DHT11_DIGITAL                                                        12/02/2016 22:33:00 PAGE 4   
+
+ 180   1              Timer0Init();
+ 181   1              
+ 182   1              while(1){
+ 183   2                      if (TorR){
+ 184   3                              
+ 185   3                              dprint(RH_I1,(RH_I0),RH_F1,RH_F0);
+ 186   3                              
+ 187   3                      }else{
+ 188   3                              dprint(T_I1,(T_I0),T_F1,T_F0);
+ 189   3                      }
+ 190   2                      
+ 191   2              }
+ 192   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    479    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     23       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
