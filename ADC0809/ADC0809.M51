@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        12/15/2016  09:38:55  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        12/15/2016  13:11:04  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -35,10 +35,11 @@ LINK MAP OF MODULE:  adc0809 (?C_STARTUP)
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     025EH     UNIT         ?C?LIB_CODE
-            CODE    0261H     0093H     UNIT         ?PR?MAIN?ADC0809
-            CODE    02F4H     0027H     UNIT         ?PR?_DPRINT?ADC0809
-            CODE    031BH     000CH     UNIT         ?C_C51STARTUP
-            CODE    0327H     000AH     UNIT         ?CO?ADC0809
+            CODE    0261H     008BH     UNIT         ?PR?MAIN?ADC0809
+            CODE    02ECH     002AH     UNIT         ?PR?_DPRINT?ADC0809
+            CODE    0316H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0322H     000AH     UNIT         ?CO?ADC0809
+            CODE    032CH     0006H     UNIT         ?PR?DELAY500US?ADC0809
 
 
 
@@ -58,8 +59,8 @@ SEGMENT                          DATA_GROUP
   +--> ?CO?ADC0809
 
 
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  13:11:04  PAGE 2
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  09:38:55  PAGE 2
 
 
 SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
@@ -68,7 +69,7 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
-  C:031BH         SEGMENT       ?C_C51STARTUP
+  C:0316H         SEGMENT       ?C_C51STARTUP
   I:0015H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
@@ -78,7 +79,7 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:031EH         SYMBOL        IDATALOOP
+  C:0319H         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
   N:0100H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
@@ -87,18 +88,18 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:031BH         SYMBOL        STARTUP1
+  C:0316H         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         126
-  C:031BH         LINE#         133
-  C:031DH         LINE#         134
-  C:031EH         LINE#         135
-  C:031FH         LINE#         136
-  C:0321H         LINE#         185
-  C:0324H         LINE#         196
+  C:0316H         LINE#         133
+  C:0318H         LINE#         134
+  C:0319H         LINE#         135
+  C:031AH         LINE#         136
+  C:031CH         LINE#         185
+  C:031FH         LINE#         196
   -------         ENDMOD        ?C_STARTUP
 
   -------         MODULE        ADC0809
@@ -108,20 +109,20 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   D:00A0H         PUBLIC        P2
   D:00B0H         PUBLIC        P3
   B:00A8H.7       PUBLIC        EA
-  C:0327H         PUBLIC        table
+  C:0322H         PUBLIC        table
   D:00A8H         PUBLIC        IE
   B:00A0H.6       PUBLIC        START
   B:00A0H.0       PUBLIC        P2_0
   B:00A0H.1       PUBLIC        P2_1
   B:00A0H.2       PUBLIC        P2_2
   B:00A0H.4       PUBLIC        OE
-  C:02F4H         PUBLIC        _dprint
+  C:02ECH         PUBLIC        _dprint
   B:00A0H.3       PUBLIC        P2_3
   D:00B8H         PUBLIC        IP
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  13:11:04  PAGE 3
+
+
   D:00CBH         PUBLIC        RCAP2H
-BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  09:38:55  PAGE 3
-
-
   D:00CAH         PUBLIC        RCAP2L
   C:0261H         PUBLIC        main
   D:0098H         PUBLIC        SCON
@@ -136,61 +137,69 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   B:00C8H.2       PUBLIC        TR2
   D:00C9H         PUBLIC        T2MOD
   D:00C8H         PUBLIC        T2CON
-  B:0090H.1       PUBLIC        led2
-  B:0090H.2       PUBLIC        led3
   B:0090H.3       PUBLIC        led4
+  C:032CH         PUBLIC        Delay500us
   D:00D0H         PUBLIC        PSW
   D:000DH         PUBLIC        V_F
+  -------         PROC          DELAY500US
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:032CH         LINE#         32
+  C:032CH         LINE#         33
+  C:032CH         LINE#         36
+  C:032DH         LINE#         37
+  C:032FH         LINE#         38
+  C:0331H         LINE#         39
+  -------         ENDPROC       DELAY500US
   -------         PROC          _DPRINT
   D:0007H         SYMBOL        num0
   D:0005H         SYMBOL        num1
   D:0003H         SYMBOL        num2
   D:0014H         SYMBOL        num3
-  C:02F4H         LINE#         29
-  C:02F4H         LINE#         31
-  C:02FBH         LINE#         32
-  C:02FDH         LINE#         33
-  C:02FFH         LINE#         35
-  C:0305H         LINE#         36
-  C:0307H         LINE#         37
-  C:0309H         LINE#         39
-  C:030DH         LINE#         40
-  C:030FH         LINE#         41
-  C:0311H         LINE#         43
-  C:0316H         LINE#         44
-  C:0318H         LINE#         45
-  C:031AH         LINE#         47
+  C:02ECH         LINE#         42
+  C:02ECH         LINE#         44
+  C:02F3H         LINE#         45
+  C:02F5H         LINE#         47
+  C:02F7H         LINE#         49
+  C:02FDH         LINE#         50
+  C:02FFH         LINE#         52
+  C:0301H         LINE#         54
+  C:0305H         LINE#         55
+  C:0307H         LINE#         57
+  C:0309H         LINE#         58
+  C:030CH         LINE#         60
+  C:0311H         LINE#         61
+  C:0313H         LINE#         63
+  C:0315H         LINE#         65
   -------         ENDPROC       _DPRINT
   -------         PROC          MAIN
-  C:0261H         LINE#         48
-  C:0261H         LINE#         49
-  C:0264H         LINE#         50
-  C:026AH         LINE#         51
-  C:0270H         LINE#         52
-  C:0272H         LINE#         53
-  C:0274H         LINE#         55
-  C:0274H         LINE#         56
-  C:0276H         LINE#         57
-  C:0278H         LINE#         58
-  C:027AH         LINE#         59
-  C:027CH         LINE#         60
-  C:027FH         LINE#         61
-  C:0281H         LINE#         62
-  C:0283H         LINE#         63
-  C:029CH         LINE#         64
-  C:02A2H         LINE#         65
-BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  09:38:55  PAGE 4
+  C:0261H         LINE#         66
+  C:0261H         LINE#         67
+  C:0264H         LINE#         68
+  C:026AH         LINE#         69
+  C:0270H         LINE#         70
+BL51 BANKED LINKER/LOCATER V6.22                                                      12/15/2016  13:11:04  PAGE 4
 
 
-  C:02A9H         LINE#         66
-  C:02B2H         LINE#         67
-  C:02C1H         LINE#         68
-  C:02CAH         LINE#         69
-  C:02D9H         LINE#         70
-  C:02E2H         LINE#         72
-  C:02ECH         LINE#         73
-  C:02F0H         LINE#         75
-  C:02F2H         LINE#         76
+  C:0272H         LINE#         71
+  C:0274H         LINE#         73
+  C:0274H         LINE#         74
+  C:0276H         LINE#         75
+  C:0278H         LINE#         76
+  C:027AH         LINE#         78
+  C:027DH         LINE#         80
+  C:027FH         LINE#         81
+  C:0298H         LINE#         82
+  C:029EH         LINE#         83
+  C:02A5H         LINE#         84
+  C:02AEH         LINE#         85
+  C:02BDH         LINE#         86
+  C:02C6H         LINE#         87
+  C:02D5H         LINE#         88
+  C:02DEH         LINE#         90
+  C:02E8H         LINE#         93
+  C:02EAH         LINE#         94
   -------         ENDPROC       MAIN
   -------         ENDMOD        ADC0809
 
@@ -220,5 +229,8 @@ SYMBOL TABLE OF MODULE:  adc0809 (?C_STARTUP)
   C:020CH         PUBLIC        ?C?UIDIV
   -------         ENDMOD        ?C?UIDIV
 
-Program Size: data=22.0 xdata=0 code=817
-LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY500US?ADC0809
+
+Program Size: data=22.0 xdata=0 code=818
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
